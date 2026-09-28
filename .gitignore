@@ -1,0 +1,16 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.pdb
+
+appsettings.json
+appsettings.*.json
+
+wwwroot/uploads/
+
+*.pfx
+.env
+.env.*
+wwwroot/profile-images/

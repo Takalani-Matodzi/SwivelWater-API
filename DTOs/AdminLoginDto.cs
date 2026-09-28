@@ -1,0 +1,10 @@
+namespace SwivelWater.API.DTOs;
+
+public class AdminLoginDto
+{
+    public string Email { get; set; } = string.Empty;
+
+    public string StaffNumber { get; set; } = string.Empty;
+
+    public string Password { get; set; } = string.Empty;
+}
