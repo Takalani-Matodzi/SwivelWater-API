@@ -15,6 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")
     ));
+
 // Add Email Service
 builder.Services.Configure<EmailSettings>(
     builder.Configuration.GetSection("Email")
@@ -34,6 +35,7 @@ builder.Services.Configure<AiSettings>(
 
 builder.Services.AddSingleton<IAiService, OpenAiService>();
 builder.Services.AddScoped<IAiCapabilityService, AiCapabilityService>();
+
 // Add Controllers
 builder.Services.AddControllers();
 
@@ -83,8 +85,6 @@ builder.Services.AddAuthorization();
 // Add OpenAPI
 builder.Services.AddOpenApi();
 
-
-
 var app = builder.Build();
 
 // Configure OpenAPI
@@ -124,6 +124,16 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Apply pending database migrations
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider
+        .GetRequiredService<ApplicationDbContext>();
+
+    await context.Database.MigrateAsync();
+}
+
 // Seed the initial admin/manager account
 using (var scope = app.Services.CreateScope())
 {
@@ -136,5 +146,4 @@ using (var scope = app.Services.CreateScope())
     );
 }
 
-app.Run();
 app.Run();
