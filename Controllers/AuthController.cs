@@ -397,11 +397,16 @@ public class AuthController : ControllerBase
                 e.EmployeeNumber == employeeNumber);
 
         if (employee == null)
-        {
-            return Unauthorized("Invalid employee number or password.");
-        }
+{
+    return Unauthorized("Invalid employee number or password.");
+}
 
-        if (!employee.IsActive || !employee.User.IsActive)
+if (employee.User.Role != "EMPLOYEE")
+{
+    return Unauthorized("Please use the administrator login.");
+}
+
+if (!employee.IsActive || !employee.User.IsActive)
         {
             return Unauthorized("Employee account is inactive.");
         }
